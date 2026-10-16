@@ -9,6 +9,7 @@ public static class PasswordEndpoints
     public static IEndpointRouteBuilder MapPasswordEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPost("/passwords", CreatePasswordAsync);
+        endpoints.MapGet("/passwords/{id}", GetPasswordAsync);
 
         return endpoints;
     }
@@ -22,5 +23,20 @@ public static class PasswordEndpoints
         return TypedResults.Created(
             $"/passwords/{generatedPassword.Id}",
             new PasswordResponse(generatedPassword.Id, generatedPassword.Value));
+    }
+
+    private static async Task<Results<Ok<PasswordResponse>, NotFound>> GetPasswordAsync(
+        Guid id,
+        PasswordService passwordService,
+        CancellationToken cancellationToken)
+    {
+        var storedPassword = await passwordService.GetByIdAsync(id, cancellationToken);
+
+        if (storedPassword is null)
+        {
+            return TypedResults.NotFound();
+        }
+
+        return TypedResults.Ok(new PasswordResponse(storedPassword.Id, storedPassword.Value));
     }
 }
