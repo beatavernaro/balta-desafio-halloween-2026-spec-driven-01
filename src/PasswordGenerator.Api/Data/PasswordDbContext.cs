@@ -5,7 +5,8 @@ namespace PasswordGenerator.Api.Data;
 
 public class PasswordDbContext(DbContextOptions<PasswordDbContext> options) : DbContext(options)
 {
-    private const int PasswordLength = 16;
+    // The generator owns the length rule (RN-01); the database constraints mirror it.
+    private const int PasswordLength = Services.PasswordGenerator.PasswordLength;
 
     public DbSet<GeneratedPassword> GeneratedPasswords => Set<GeneratedPassword>();
 
