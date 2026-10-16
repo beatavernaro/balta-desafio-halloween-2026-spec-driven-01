@@ -31,6 +31,8 @@ public static class PasswordGenerator
         return new string(characters);
     }
 
+    public static bool IsValid(string password) => throw new NotImplementedException();
+
     // GetInt32 draws uniformly within the range, avoiding the bias of applying modulo to raw random bytes.
     private static char PickRandomCharacter(string source) =>
         source[RandomNumberGenerator.GetInt32(source.Length)];
