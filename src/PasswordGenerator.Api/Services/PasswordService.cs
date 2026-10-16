@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PasswordGenerator.Api.Data;
 using PasswordGenerator.Api.Models;
 
@@ -23,4 +24,10 @@ public class PasswordService(PasswordDbContext dbContext, ILogger<PasswordServic
 
         return generatedPassword;
     }
+
+    // Read-only query: the stored password is returned exactly as persisted (RN-08).
+    public Task<GeneratedPassword?> GetByIdAsync(Guid id, CancellationToken cancellationToken) =>
+        dbContext.GeneratedPasswords
+            .AsNoTracking()
+            .SingleOrDefaultAsync(password => password.Id == id, cancellationToken);
 }
