@@ -1,14 +1,19 @@
 using System.Net;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PasswordGenerator.Api.Data;
 
 namespace PasswordGenerator.IntegrationTests;
 
 public sealed class PasswordCreationTests : IDisposable
 {
+    private const int MultipleCreationCount = 20;
+
     private readonly PasswordApiFactory _factory = new();
     private readonly HttpClient _client;
 
@@ -49,10 +54,7 @@ public sealed class PasswordCreationTests : IDisposable
     [Fact]
     public async Task CreatePassword_WhenStorageFails_ReturnsProblemDetailsWithoutConfirmingSuccess()
     {
-        using var failingFactory = _factory.WithWebHostBuilder(builder =>
-            builder.ConfigureTestServices(services =>
-                services.ConfigureDbContext<PasswordDbContext>(options =>
-                    options.AddInterceptors(new FailingSaveChangesInterceptor()))));
+        using var failingFactory = CustomizeFactory(storageFailure: new FailingSaveChangesInterceptor());
         using var client = failingFactory.CreateClient();
 
         var response = await client.PostAsync("/passwords", content: null);
@@ -75,11 +77,94 @@ public sealed class PasswordCreationTests : IDisposable
         Assert.Empty(dbContext.GeneratedPasswords);
     }
 
+    // CB-13
+    [Fact]
+    public async Task CreatePassword_MultipleRequests_AssignUniqueIdentifiers()
+    {
+        var identifiers = new List<Guid>();
+
+        for (var request = 0; request < MultipleCreationCount; request++)
+        {
+            var response = await _client.PostAsync("/passwords", content: null);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            var body = await response.Content.ReadFromJsonAsync<PasswordResponseBody>();
+            Assert.NotNull(body);
+            identifiers.Add(body.Id);
+        }
+
+        Assert.Equal(MultipleCreationCount, identifiers.Distinct().Count());
+
+        using var scope = _factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<PasswordDbContext>();
+        var storedIdentifiers = await dbContext.GeneratedPasswords.Select(password => password.Id).ToListAsync();
+
+        Assert.Equal(identifiers.Order(), storedIdentifiers.Order());
+    }
+
+    [Fact]
+    public async Task CreatePassword_DoesNotLogPasswordValue()
+    {
+        var logs = new CapturingLoggerProvider();
+        using var loggingFactory = CustomizeFactory(logs: logs);
+        using var client = loggingFactory.CreateClient();
+
+        var response = await client.PostAsync("/passwords", content: null);
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<PasswordResponseBody>();
+        Assert.NotNull(body);
+
+        // Sanity check: the operation itself is logged, so the capture is working.
+        Assert.Contains(logs.Entries, entry => entry.Contains(body.Id.ToString()));
+        Assert.DoesNotContain(logs.Entries, entry => entry.Contains(body.Password));
+    }
+
+    [Fact]
+    public async Task CreatePassword_WhenStorageFails_DoesNotLogPasswordValue()
+    {
+        var logs = new CapturingLoggerProvider();
+        var storageFailure = new FailingSaveChangesInterceptor();
+        using var failingFactory = CustomizeFactory(logs, storageFailure);
+        using var client = failingFactory.CreateClient();
+
+        var response = await client.PostAsync("/passwords", content: null);
+
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+
+        // Sanity checks: a password was generated and the failure itself was logged.
+        var attemptedPassword = Assert.Single(storageFailure.AttemptedPasswords);
+        Assert.Contains(logs.Entries, entry => entry.Contains(FailingSaveChangesInterceptor.FailureMessage));
+        Assert.DoesNotContain(logs.Entries, entry => entry.Contains(attemptedPassword));
+    }
+
     public void Dispose()
     {
         _client.Dispose();
         _factory.Dispose();
     }
+
+    private WebApplicationFactory<Program> CustomizeFactory(
+        CapturingLoggerProvider? logs = null,
+        FailingSaveChangesInterceptor? storageFailure = null) =>
+        _factory.WithWebHostBuilder(builder =>
+        {
+            if (logs is not null)
+            {
+                // Capture every level, not only what the default configuration would emit.
+                builder.ConfigureLogging(logging => logging
+                    .AddProvider(logs)
+                    .AddFilter<CapturingLoggerProvider>(category: null, LogLevel.Trace));
+            }
+
+            if (storageFailure is not null)
+            {
+                builder.ConfigureTestServices(services =>
+                    services.ConfigureDbContext<PasswordDbContext>(options =>
+                        options.AddInterceptors(storageFailure)));
+            }
+        });
 
     private sealed record PasswordResponseBody(Guid Id, string Password);
 

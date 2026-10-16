@@ -70,7 +70,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 - [X] **T017** [US1] Adicionar a `PasswordCreationTests.cs` um cenário de falha controlada de gravação por interceptação do EF Core ou mecanismo nativo equivalente. **Concluído quando:** o teste compilar, executar e demonstrar o comportamento de erro ainda não implementado, sem falso sucesso.
 - [X] **T018** [US1] Implementar tratamento centralizado de exceções em `Program.cs` com HTTP 500 e ProblemDetails. **Concluído quando:** o teste de falha passar, sem confirmação de persistência ou exposição de detalhes internos.
-- [ ] **T019** [US1] Adicionar testes em `PasswordCreationTests.cs` para unicidade de GUIDs e ausência de senhas nos logs, inclusive durante erros. **Concluído quando:** os testes passarem e a suíte US1 estiver integralmente aprovada.
+- [X] **T019** [US1] Adicionar testes em `PasswordCreationTests.cs` para unicidade de GUIDs e ausência de senhas nos logs, inclusive durante erros. **Concluído quando:** os testes passarem e a suíte US1 estiver integralmente aprovada.
 
 **Dependências:** T009 → T010 → T011 → T012 → T013 → T014 → T015 → T016 → T017 → T018 → T019.  
 **Requisitos:** RF-01 a RF-12, RF-16.  
