@@ -27,11 +27,11 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 **Objetivo:** criar a solução e estabelecer as configurações básicas.
 
-- [ ] **T001** Criar a solução .NET 10 e o projeto Minimal API em `src/PasswordGenerator.Api/`, incluindo-o na solução. **Concluído quando:** a API inicial compilar sem erros ou warnings.
-- [ ] **T002** Criar os projetos xUnit em `tests/PasswordGenerator.UnitTests/` e `tests/PasswordGenerator.IntegrationTests/`, incluindo-os na solução. **Concluído quando:** ambos executarem seus testes iniciais com sucesso.
-- [ ] **T003** [P] Configurar `.editorconfig`, `.gitignore` e propriedades de compilação para tratar warnings como erros. **Concluído quando:** a configuração estiver versionada e a solução compilar.
-- [ ] **T004** Configurar EF Core, SQLite, OpenAPI, `Microsoft.AspNetCore.Mvc.Testing` e Coverlet nos respectivos `.csproj`, com versões compatíveis. **Concluído quando:** restauração e compilação forem bem-sucedidas.
-- [ ] **T005** Organizar `src/PasswordGenerator.Api/Program.cs` e os arquivos iniciais necessários à estrutura definida no Plan, sem criar componentes ociosos. **Concluído quando:** a API iniciar e a estrutura permanecer minimalista.
+- [X] **T001** Criar a solução .NET 10 e o projeto Minimal API em `src/PasswordGenerator.Api/`, incluindo-o na solução. **Concluído quando:** a API inicial compilar sem erros ou warnings.
+- [X] **T002** Criar os projetos xUnit em `tests/PasswordGenerator.UnitTests/` e `tests/PasswordGenerator.IntegrationTests/`, incluindo-os na solução. **Concluído quando:** ambos executarem seus testes iniciais com sucesso.
+- [X] **T003** [P] Configurar `.editorconfig`, `.gitignore` e propriedades de compilação para tratar warnings como erros. **Concluído quando:** a configuração estiver versionada e a solução compilar.
+- [X] **T004** Configurar EF Core, SQLite, OpenAPI, `Microsoft.AspNetCore.Mvc.Testing` e Coverlet nos respectivos `.csproj`, com versões compatíveis. **Concluído quando:** restauração e compilação forem bem-sucedidas.
+- [X] **T005** Organizar `src/PasswordGenerator.Api/Program.cs` e os arquivos iniciais necessários à estrutura definida no Plan, sem criar componentes ociosos. **Concluído quando:** a API iniciar e a estrutura permanecer minimalista.
 
 **Dependências:** T001 → T002 e T003; T002/T003 → T004 → T005.  
 **Portão:** restauração, compilação e análise estática sem falhas.
