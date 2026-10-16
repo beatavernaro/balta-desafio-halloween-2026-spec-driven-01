@@ -40,7 +40,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 **Objetivo:** preparar o armazenamento SQLite.
 
-- [ ] **T006** Criar `src/PasswordGenerator.Api/Models/GeneratedPassword.cs` com `Id` e `Value`. **Concluído quando:** a entidade representar o modelo aprovado.
+- [X] **T006** Criar `src/PasswordGenerator.Api/Models/GeneratedPassword.cs` com `Id` e `Value`. **Concluído quando:** a entidade representar o modelo aprovado.
 - [ ] **T007** Criar `src/PasswordGenerator.Api/Data/PasswordDbContext.cs`, configurando chave primária, campo obrigatório e restrição de comprimento. **Concluído quando:** o mapeamento refletir o Plan.
 - [ ] **T008** Configurar a conexão SQLite em `src/PasswordGenerator.Api/appsettings.json` e registrar o DbContext em `Program.cs`. **Concluído quando:** a aplicação resolver o DbContext por injeção de dependências.
 - [ ] **T009** Criar a migration inicial em `src/PasswordGenerator.Api/Data/Migrations/`, aplicá-la em desenvolvimento e verificar o esquema. **Concluído quando:** o banco puder ser recriado pelas migrations e não for versionado.
