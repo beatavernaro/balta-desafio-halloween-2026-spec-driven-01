@@ -41,6 +41,13 @@ dotnet_naming_rule.types_and_members_pascal_case.symbols = types_and_members
 dotnet_naming_rule.types_and_members_pascal_case.style = pascal_case
 dotnet_naming_rule.types_and_members_pascal_case.severity = warning
 
+# Nomenclatura: constantes em PascalCase
+dotnet_naming_symbols.constant_fields.applicable_kinds = field
+dotnet_naming_symbols.constant_fields.required_modifiers = const
+dotnet_naming_rule.constant_fields_pascal_case.symbols = constant_fields
+dotnet_naming_rule.constant_fields_pascal_case.style = pascal_case
+dotnet_naming_rule.constant_fields_pascal_case.severity = warning
+
 # Nomenclatura: campos privados em _camelCase
 dotnet_naming_symbols.private_fields.applicable_kinds = field
 dotnet_naming_symbols.private_fields.applicable_accessibilities = private
