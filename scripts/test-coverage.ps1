@@ -1,6 +1,9 @@
-# Runs every test project with Coverlet and consolidates their results into a single coverage report.
+# Runs every test project with Coverlet, consolidates their results into a single coverage report
+# and fails when the aggregate line coverage is below the minimum.
 param(
-    [switch] $NoBuild
+    [switch] $NoBuild,
+
+    [double] $MinimumLineCoverage = 80
 )
 
 $ErrorActionPreference = 'Stop'
@@ -35,3 +38,8 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Get-Content (Join-Path $reportDirectory 'Summary.txt')
+
+& (Join-Path $PSScriptRoot 'check-coverage.ps1') `
+    -CoberturaPath (Join-Path $reportDirectory 'Cobertura.xml') `
+    -MinimumLineCoverage $MinimumLineCoverage
+exit $LASTEXITCODE
