@@ -110,7 +110,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 **Objetivo:** consolidar evidências de conformidade.
 
 - [X] **T030** Criar `tests/PasswordGenerator.IntegrationTests/PasswordContractTests.cs` para formatos HTTP e exposição de somente duas operações funcionais. **Concluído quando:** contratos estiverem cobertos por testes.
-- [ ] **T031** Auditar a cobertura de **cada** caso de borda CB-01 a CB-13, adicionando aos testes da história correspondente apenas os cenários ainda não contemplados. **Concluído quando:** cada CB tiver teste identificável ou justificativa explícita de revisão técnica, sem descobrir requisitos apenas nesta fase.
+- [X] **T031** Auditar a cobertura de **cada** caso de borda CB-01 a CB-13, adicionando aos testes da história correspondente apenas os cenários ainda não contemplados. **Concluído quando:** cada CB tiver teste identificável ou justificativa explícita de revisão técnica, sem descobrir requisitos apenas nesta fase.
 - [ ] **T032** Atualizar `README.md` com pré-requisitos, restauração, migrations, execução, testes e limitações de segurança. **Concluído quando:** outra pessoa puder reproduzir a execução.
 - [ ] **T033** Atualizar a rastreabilidade deste `tasks.md` com nomes de testes e evidências para RF-01 a RF-17, CA-01 a CA-11 e CB-01 a CB-13. **Concluído quando:** todos possuírem evidência verificável.
 - [ ] **T034** Registrar no `README.md` o procedimento reproduzível e os resultados finais de build, testes, cobertura, análise estática e conformidade com a Constitution. **Concluído quando:** todos os portões estiverem aprovados.
@@ -165,6 +165,26 @@ Antes de T010 e T014, classificar CB-01 a CB-13 usando as descrições originais
 - **Consulta e identificadores:** incorporar em T020, T023 e T024, conforme aplicável.
 
 Registrar a associação individual de cada CB ao teste correspondente durante a execução. T031 confirma a completude e corrige eventuais lacunas; não substitui os testes das histórias.
+
+### 11.1 Auditoria T031 (2026-10-16)
+
+| CB | Situação (`spec.md`) | Tarefa de origem | Teste |
+|---|---|---|---|
+| CB-01 | 16 caracteres e composição válida: aceitar | T012 | `PasswordGeneratorTests.IsValid_AcceptsPasswordWith16CharactersAndValidComposition` |
+| CB-02 | Comprimento diferente de 16: rejeitar | T010, T012 | `PasswordGeneratorTests.IsValid_RejectsPasswordWithLengthOtherThan16`; `Generate_ReturnsPasswordWithExactly16Characters` |
+| CB-03 | Sem letra maiúscula: rejeitar | T010, T012 | `PasswordGeneratorTests.IsValid_RejectsPasswordMissingRequiredCategory` (linha CB-03); `Generate_ReturnsPasswordContainingRequiredCategory` |
+| CB-04 | Sem letra minúscula: rejeitar | T010, T012 | `PasswordGeneratorTests.IsValid_RejectsPasswordMissingRequiredCategory` (linha CB-04); `Generate_ReturnsPasswordContainingRequiredCategory` |
+| CB-05 | Sem número: rejeitar | T010, T012 | `PasswordGeneratorTests.IsValid_RejectsPasswordMissingRequiredCategory` (linha CB-05); `Generate_ReturnsPasswordContainingRequiredCategory` |
+| CB-06 | Sem símbolo permitido: rejeitar | T010, T012 | `PasswordGeneratorTests.IsValid_RejectsPasswordMissingRequiredCategory` (linha CB-06); `Generate_ReturnsPasswordContainingRequiredCategory` |
+| CB-07 | Com espaço em branco: rejeitar | T012 | `PasswordGeneratorTests.IsValid_RejectsPasswordWithWhitespace`; `Generate_ReturnsPasswordWithoutWhitespace` |
+| CB-08 | Caractere não permitido: rejeitar | T012 | `PasswordGeneratorTests.IsValid_RejectsPasswordWithCharacterOutsideAllowedSet` (inclui letra acentuada); `Generate_ReturnsPasswordWithOnlyAllowedCharacters` |
+| CB-09 | Repetidos ou sequenciais com composição válida: aceitar | T012 | `PasswordGeneratorTests.IsValid_AcceptsRepeatedOrSequentialCharactersWithValidComposition` |
+| CB-10 | GUID válido sem registro: não encontrado | T023 | `PasswordRetrievalTests.GetPassword_UnknownIdentifier_ReturnsNotFoundProblemDetails` |
+| CB-11 | Formato inválido: rejeitar | T023 | `PasswordRetrievalTests.GetPassword_InvalidIdentifier_ReturnsBadRequestProblemDetails` |
+| CB-12 | Falha no armazenamento: erro sem sucesso | T017, T019 | `PasswordCreationTests.CreatePassword_WhenStorageFails_ReturnsProblemDetailsWithoutConfirmingSuccess`; `CreatePassword_WhenStorageFails_DoesNotLogPasswordValue` |
+| CB-13 | Múltiplas gerações: GUID único | T019 | `PasswordCreationTests.CreatePassword_MultipleRequests_AssignUniqueIdentifiers` |
+
+**Resultado:** os 13 casos possuem teste identificável e aprovado. Nenhum cenário precisou ser criado nesta fase; a única correção foi identificar individualmente CB-03 a CB-06 nas linhas de dados do teste que os agrupa.
 
 ## 12. Dependências gerais
 

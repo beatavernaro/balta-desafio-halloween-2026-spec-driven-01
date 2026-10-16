@@ -77,12 +77,11 @@ public class PasswordGeneratorTests
         Assert.False(Api.Services.PasswordGenerator.IsValid(password));
     }
 
-    // CB-03 to CB-06
     [Theory]
-    [InlineData("ab3!cd4@ef5#gh6$")]
-    [InlineData("AB3!CD4@EF5#GH6$")]
-    [InlineData("Abc!Cde@Efg#Ghi$")]
-    [InlineData("Ab3xCd4yEf5zGh6w")]
+    [InlineData("ab3!cd4@ef5#gh6$")] // CB-03: no uppercase letter
+    [InlineData("AB3!CD4@EF5#GH6$")] // CB-04: no lowercase letter
+    [InlineData("Abc!Cde@Efg#Ghi$")] // CB-05: no digit
+    [InlineData("Ab3xCd4yEf5zGh6w")] // CB-06: no allowed symbol
     public void IsValid_RejectsPasswordMissingRequiredCategory(string password)
     {
         Assert.False(Api.Services.PasswordGenerator.IsValid(password));
