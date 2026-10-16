@@ -112,7 +112,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 - [X] **T030** Criar `tests/PasswordGenerator.IntegrationTests/PasswordContractTests.cs` para formatos HTTP e exposição de somente duas operações funcionais. **Concluído quando:** contratos estiverem cobertos por testes.
 - [X] **T031** Auditar a cobertura de **cada** caso de borda CB-01 a CB-13, adicionando aos testes da história correspondente apenas os cenários ainda não contemplados. **Concluído quando:** cada CB tiver teste identificável ou justificativa explícita de revisão técnica, sem descobrir requisitos apenas nesta fase.
 - [X] **T032** Atualizar `README.md` com pré-requisitos, restauração, migrations, execução, testes e limitações de segurança. **Concluído quando:** outra pessoa puder reproduzir a execução.
-- [ ] **T033** Atualizar a rastreabilidade deste `tasks.md` com nomes de testes e evidências para RF-01 a RF-17, CA-01 a CA-11 e CB-01 a CB-13. **Concluído quando:** todos possuírem evidência verificável.
+- [X] **T033** Atualizar a rastreabilidade deste `tasks.md` com nomes de testes e evidências para RF-01 a RF-17, CA-01 a CA-11 e CB-01 a CB-13. **Concluído quando:** todos possuírem evidência verificável.
 - [ ] **T034** Registrar no `README.md` o procedimento reproduzível e os resultados finais de build, testes, cobertura, análise estática e conformidade com a Constitution. **Concluído quando:** todos os portões estiverem aprovados.
 
 **Dependências:** T029 → T030 → T031 → T032 → T033 → T034.  
@@ -120,41 +120,45 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 ## 9. Matriz de rastreabilidade funcional
 
-| Requisito | Tarefas |
-|---|---|
-| RF-01 | T014–T016 |
-| RF-02 | T010–T013 |
-| RF-03 | T010–T013 |
-| RF-04 | T010–T013 |
-| RF-05 | T010–T013 |
-| RF-06 | T010–T013 |
-| RF-07 | T012–T013 |
-| RF-08 | T012–T013 |
-| RF-09 | T011–T013 |
-| RF-10 | T006–T009, T015–T016 |
-| RF-11 | T006–T007, T015, T019 |
-| RF-12 | T014, T016 |
-| RF-13 | T020–T022 |
-| RF-14 | T020–T022 |
-| RF-15 | T023–T024 |
-| RF-16 | T017–T018 |
-| RF-17 | T016, T022, T030 |
+Evidências registradas na T033. Classes de teste: `PasswordGeneratorTests` (unitários) e `PasswordCreationTests`, `PasswordRetrievalTests` e `PasswordContractTests` (integração).
+
+| Requisito | Tarefas | Evidência verificável |
+|---|---|---|
+| RF-01 | T014–T016 | `PasswordCreationTests.CreatePassword_ReturnsCreatedWithIdentifierAndValidPassword` |
+| RF-02 | T010–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordWithExactly16Characters`; `IsValid_RejectsPasswordWithLengthOtherThan16` |
+| RF-03 | T010–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordContainingRequiredCategory` (maiúsculas); `IsValid_RejectsPasswordMissingRequiredCategory` (CB-03) |
+| RF-04 | T010–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordContainingRequiredCategory` (minúsculas); `IsValid_RejectsPasswordMissingRequiredCategory` (CB-04) |
+| RF-05 | T010–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordContainingRequiredCategory` (números); `IsValid_RejectsPasswordMissingRequiredCategory` (CB-05) |
+| RF-06 | T010–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordContainingRequiredCategory` (símbolos); `IsValid_RejectsPasswordMissingRequiredCategory` (CB-06) |
+| RF-07 | T012–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordWithOnlyAllowedCharacters`; `IsValid_RejectsPasswordWithCharacterOutsideAllowedSet` |
+| RF-08 | T012–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordWithoutWhitespace`; `IsValid_RejectsPasswordWithWhitespace` |
+| RF-09 | T011–T013 | Revisão do algoritmo na T013 (commit `3fc6778`): somente `RandomNumberGenerator.GetInt32` na seleção e no Fisher–Yates, sem `System.Random` nem módulo; `IsValid_AcceptsRepeatedOrSequentialCharactersWithValidComposition` |
+| RF-10 | T006–T009, T015–T016 | `PasswordCreationTests.CreatePassword_PersistsReturnedPassword` |
+| RF-11 | T006–T007, T015, T019 | `PasswordCreationTests.CreatePassword_MultipleRequests_AssignUniqueIdentifiers`; chave primária verificada no esquema (T009) |
+| RF-12 | T014, T016 | `PasswordCreationTests.CreatePassword_ReturnsCreatedWithIdentifierAndValidPassword`; `PasswordContractTests.CreatePassword_ResponseBody_ContainsOnlyIdAndPassword` |
+| RF-13 | T020–T022 | `PasswordRetrievalTests.GetPassword_ExistingIdentifier_ReturnsOkWithOriginalPassword` |
+| RF-14 | T020–T022 | `PasswordRetrievalTests.GetPassword_ExistingIdentifier_ReturnsOkWithOriginalPassword`; `GetPassword_ExistingIdentifier_DoesNotModifyStoredPassword` |
+| RF-15 | T023–T024 | `PasswordRetrievalTests.GetPassword_InvalidIdentifier_ReturnsBadRequestProblemDetails`; `GetPassword_UnknownIdentifier_ReturnsNotFoundProblemDetails`; `PasswordContractTests.GetPassword_ErrorResponse_FollowsProblemDetailsContract` |
+| RF-16 | T017–T018 | `PasswordCreationTests.CreatePassword_WhenStorageFails_ReturnsProblemDetailsWithoutConfirmingSuccess`; `CreatePassword_WhenStorageFails_DoesNotLogPasswordValue` |
+| RF-17 | T016, T022, T030 | `PasswordContractTests.Application_ExposesOnlyTwoFunctionalOperations`; `UnsupportedOperation_ReturnsMethodNotAllowed` |
 
 ## 10. Matriz de critérios de aceite
 
-| Critério | Tarefas |
-|---|---|
-| CA-01 | T010–T013 |
-| CA-02 | T010–T013 |
-| CA-03 | T012–T013 |
-| CA-04 | T014–T016 |
-| CA-05 | T014–T016 |
-| CA-06 | T020–T022 |
-| CA-07 | T023–T024 |
-| CA-08 | T023–T024 |
-| CA-09 | T017–T018 |
-| CA-10 | T011–T013 |
-| CA-11 | T030–T031 |
+| Critério | Tarefas | Evidência verificável |
+|---|---|---|
+| CA-01 | T010–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordWithExactly16Characters`; `PasswordCreationTests.CreatePassword_ReturnsCreatedWithIdentifierAndValidPassword` |
+| CA-02 | T010–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordContainingRequiredCategory`; `Generate_ReturnsPasswordAcceptedByValidation` |
+| CA-03 | T012–T013 | `PasswordGeneratorTests.Generate_ReturnsPasswordWithOnlyAllowedCharacters`; `Generate_ReturnsPasswordWithoutWhitespace` |
+| CA-04 | T014–T016, T019 | `PasswordCreationTests.CreatePassword_PersistsReturnedPassword`; `CreatePassword_MultipleRequests_AssignUniqueIdentifiers` |
+| CA-05 | T014–T016 | `PasswordCreationTests.CreatePassword_ReturnsCreatedWithIdentifierAndValidPassword`; `PasswordContractTests.CreatePassword_ResponseBody_ContainsOnlyIdAndPassword` |
+| CA-06 | T020–T022 | `PasswordRetrievalTests.GetPassword_ExistingIdentifier_ReturnsOkWithOriginalPassword` |
+| CA-07 | T020–T021 (previsto: T023–T024) | `PasswordRetrievalTests.GetPassword_ExistingIdentifier_DoesNotModifyStoredPassword`; consulta com `AsNoTracking` (T021) |
+| CA-08 | T023–T024 | `PasswordRetrievalTests.GetPassword_InvalidIdentifier_ReturnsBadRequestProblemDetails`; `GetPassword_UnknownIdentifier_ReturnsNotFoundProblemDetails` |
+| CA-09 | T017–T018 | `PasswordCreationTests.CreatePassword_WhenStorageFails_ReturnsProblemDetailsWithoutConfirmingSuccess` |
+| CA-10 | T011–T013 | Revisão do algoritmo na T013 (commit `3fc6778`); `PasswordGeneratorTests.IsValid_AcceptsRepeatedOrSequentialCharactersWithValidComposition` |
+| CA-11 | T030–T031 | `PasswordContractTests.Application_ExposesOnlyTwoFunctionalOperations`; `UnsupportedOperation_ReturnsMethodNotAllowed` |
+
+Os casos de borda CB-01 a CB-13 estão associados aos testes na seção 11.1.
 
 ## 11. Rastreabilidade dos casos de borda
 
