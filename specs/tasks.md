@@ -109,7 +109,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 **Objetivo:** consolidar evidências de conformidade.
 
-- [ ] **T030** Criar `tests/PasswordGenerator.IntegrationTests/PasswordContractTests.cs` para formatos HTTP e exposição de somente duas operações funcionais. **Concluído quando:** contratos estiverem cobertos por testes.
+- [X] **T030** Criar `tests/PasswordGenerator.IntegrationTests/PasswordContractTests.cs` para formatos HTTP e exposição de somente duas operações funcionais. **Concluído quando:** contratos estiverem cobertos por testes.
 - [ ] **T031** Auditar a cobertura de **cada** caso de borda CB-01 a CB-13, adicionando aos testes da história correspondente apenas os cenários ainda não contemplados. **Concluído quando:** cada CB tiver teste identificável ou justificativa explícita de revisão técnica, sem descobrir requisitos apenas nesta fase.
 - [ ] **T032** Atualizar `README.md` com pré-requisitos, restauração, migrations, execução, testes e limitações de segurança. **Concluído quando:** outra pessoa puder reproduzir a execução.
 - [ ] **T033** Atualizar a rastreabilidade deste `tasks.md` com nomes de testes e evidências para RF-01 a RF-17, CA-01 a CA-11 e CB-01 a CB-13. **Concluído quando:** todos possuírem evidência verificável.
