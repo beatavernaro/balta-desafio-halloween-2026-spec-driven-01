@@ -81,7 +81,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 **Prioridade:** P2. **Objetivo:** recuperar a senha original por GUID.
 
-- [ ] **T020** [US2] Criar `tests/PasswordGenerator.IntegrationTests/PasswordRetrievalTests.cs` para consulta de registro existente e comparação com a senha original. Criar contrato/endpoint mínimo compilável, se necessário, sem antecipar a lógica. **Concluído quando:** o teste compilar, executar e evidenciar o comportamento ausente.
+- [X] **T020** [US2] Criar `tests/PasswordGenerator.IntegrationTests/PasswordRetrievalTests.cs` para consulta de registro existente e comparação com a senha original. Criar contrato/endpoint mínimo compilável, se necessário, sem antecipar a lógica. **Concluído quando:** o teste compilar, executar e evidenciar o comportamento ausente.
 - [ ] **T021** [US2] Implementar consulta por GUID em `PasswordService.cs`. **Concluído quando:** o serviço recuperar registros sem modificá-los.
 - [ ] **T022** [US2] Implementar `GET /passwords/{id}` em `PasswordEndpoints.cs`. **Concluído quando:** a integração retornar HTTP 200 e a senha original.
 - [ ] **T023** [US2] Adicionar a `PasswordRetrievalTests.cs` testes para GUID inválido, GUID inexistente e demais casos de borda de consulta identificados no `spec.md`. **Concluído quando:** testes compilarem, executarem e identificarem comportamentos pendentes.
