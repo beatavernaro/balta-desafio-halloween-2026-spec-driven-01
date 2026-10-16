@@ -98,7 +98,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 - [X] **T025** Configurar coleta e consolidação de cobertura do código de produção nos projetos de teste. **Concluído quando:** a execução produzir relatórios válidos.
 - [X] **T026** Configurar verificação automática de cobertura agregada de linhas mínima de 80%. **Concluído quando:** a verificação retornar código de saída não zero abaixo de 80% e zero a partir de 80%.
-- [ ] **T027** [P] Configurar análise estática e verificação de formatação nos arquivos de configuração da solução. **Concluído quando:** violações bloqueantes provocarem falha.
+- [X] **T027** [P] Configurar análise estática e verificação de formatação nos arquivos de configuração da solução. **Concluído quando:** violações bloqueantes provocarem falha.
 - [ ] **T028** Criar `.github/workflows/ci.yml` para restauração, compilação, formatação, testes e cobertura em pull requests e alterações da branch principal. **Concluído quando:** todas as verificações forem executadas pelo workflow.
 - [ ] **T029** Adicionar verificações automatizadas das condições de reprovação dos portões, usando execução controlada e sem quebrar a branch principal. **Concluído quando:** as falhas forem demonstráveis e a configuração final permanecer válida.
 

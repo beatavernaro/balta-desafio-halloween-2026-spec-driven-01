@@ -4,7 +4,7 @@ using PasswordGenerator.Api.Models;
 
 namespace PasswordGenerator.Api.Services;
 
-public class PasswordService(PasswordDbContext dbContext, ILogger<PasswordService> logger)
+public partial class PasswordService(PasswordDbContext dbContext, ILogger<PasswordService> logger)
 {
     public async Task<GeneratedPassword> CreateAsync(CancellationToken cancellationToken)
     {
@@ -20,7 +20,7 @@ public class PasswordService(PasswordDbContext dbContext, ILogger<PasswordServic
         await dbContext.SaveChangesAsync(cancellationToken);
 
         // Only the identifier is logged: password values must never reach the logs.
-        logger.LogInformation("Password {PasswordId} generated and stored.", generatedPassword.Id);
+        LogPasswordCreated(logger, generatedPassword.Id);
 
         return generatedPassword;
     }
@@ -30,4 +30,7 @@ public class PasswordService(PasswordDbContext dbContext, ILogger<PasswordServic
         dbContext.GeneratedPasswords
             .AsNoTracking()
             .SingleOrDefaultAsync(password => password.Id == id, cancellationToken);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Password {PasswordId} generated and stored.")]
+    private static partial void LogPasswordCreated(ILogger logger, Guid passwordId);
 }

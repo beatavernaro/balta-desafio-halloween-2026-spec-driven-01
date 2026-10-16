@@ -41,6 +41,9 @@ dotnet_naming_rule.types_and_members_pascal_case.symbols = types_and_members
 dotnet_naming_rule.types_and_members_pascal_case.style = pascal_case
 dotnet_naming_rule.types_and_members_pascal_case.severity = warning
 
+# Aplica as regras de nomenclatura abaixo também na compilação, não apenas no dotnet format
+dotnet_diagnostic.IDE1006.severity = warning
+
 # Nomenclatura: constantes em PascalCase
 dotnet_naming_symbols.constant_fields.applicable_kinds = field
 dotnet_naming_symbols.constant_fields.required_modifiers = const
@@ -67,3 +70,7 @@ dotnet_naming_rule.parameters_and_locals_camel_case.severity = warning
 # Migrations do EF Core sao geradas pela ferramenta e nao seguem as regras de estilo do projeto
 [**/Data/Migrations/*.cs]
 generated_code = true
+
+# Nomes de teste seguem o padrao Metodo_Cenario_ResultadoEsperado recomendado pela Microsoft
+[tests/**/*.cs]
+dotnet_diagnostic.CA1707.severity = none
