@@ -1,4 +1,4 @@
-﻿namespace PasswordGenerator.IntegrationTests;
+namespace PasswordGenerator.IntegrationTests;
 
 public class UnitTest1
 {
