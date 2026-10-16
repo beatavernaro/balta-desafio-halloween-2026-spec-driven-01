@@ -14,6 +14,16 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+// The middleware logs the exception; the client only receives a generic ProblemDetails, in every environment.
+app.UseExceptionHandler(exceptionHandlerApp =>
+    exceptionHandlerApp.Run(context =>
+        Results.Problem(
+            type: "about:blank",
+            title: "Internal server error",
+            detail: "The operation could not be completed.",
+            statusCode: StatusCodes.Status500InternalServerError)
+        .ExecuteAsync(context)));
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
