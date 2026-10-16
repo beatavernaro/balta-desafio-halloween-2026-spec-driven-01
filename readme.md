@@ -131,6 +131,61 @@ specs/                          Documentos de Spec-Driven Development
 .github/workflows/ci.yml        Integração contínua
 ```
 
+## Validação final
+
+### Procedimento reproduzível
+
+Executado a partir da raiz do repositório, na mesma ordem da integração contínua:
+
+```powershell
+dotnet restore PasswordGenerator.slnx
+dotnet tool restore
+dotnet format PasswordGenerator.slnx --verify-no-changes --no-restore
+dotnet build PasswordGenerator.slnx --no-restore -warnaserror
+powershell -ExecutionPolicy Bypass -File scripts/test-coverage.ps1 -NoBuild
+powershell -ExecutionPolicy Bypass -File scripts/verify-gate-failures.ps1
+dotnet list PasswordGenerator.slnx package --vulnerable --include-transitive
+```
+
+### Resultados (2026-10-16, commit `9030b13`, .NET SDK 10.0.301, Windows)
+
+| Portão | Verificação | Resultado |
+|---|---|---|
+| 1. Compilação | Restauração e build com warnings como erros | ✅ 0 avisos, 0 erros |
+| 2. Testes | Testes unitários | ✅ 23 de 23 aprovados |
+| 2. Testes | Testes de integração | ✅ 21 de 21 aprovados |
+| 2. Testes | Cobertura agregada de linhas (mínimo 80%) | ✅ 95,74% (135 de 141 linhas); ramos 87,5% |
+| 3. Análise estática | `dotnet format --verify-no-changes` e analisadores `latest-recommended` com estilo aplicado no build | ✅ Sem violações |
+| 3. Análise estática | Pacotes com vulnerabilidades conhecidas, inclusive transitivos | ✅ Nenhum |
+| 4. Conformidade funcional | RF-01 a RF-17, CA-01 a CA-11 e CB-01 a CB-13 com evidência | ✅ Ver seções 9, 10 e 11.1 de [`tasks.md`](specs/tasks.md) |
+| 5. Integração contínua | Workflow [`ci.yml`](.github/workflows/ci.yml) | ⏳ Todas as etapas reproduzidas localmente com sucesso; a primeira execução no GitHub Actions ocorre após o push |
+
+**Portões reprovam violações** (`scripts/verify-gate-failures.ps1`, em cópia descartável do repositório):
+
+| Violação injetada | Resultado esperado | Observado |
+|---|---|---|
+| Variável não utilizada (CS0219) | Build falha | ✅ exit 1 |
+| Espaçamento fora do padrão | `dotnet format` falha | ✅ exit 2 |
+| Teste com falha | `dotnet test` falha | ✅ exit 1 |
+| Cobertura de 79,99% | Verificação falha | ✅ exit 1 |
+| Cobertura de 80% (controle) | Verificação passa | ✅ exit 0 |
+
+As 6 linhas não cobertas são o método `Down` da migration inicial (reversão, não executada pelos testes) e a salvaguarda do gerador que lança exceção caso uma senha gerada não passe na validação, inalcançável enquanto o algoritmo estiver correto.
+
+### Conformidade com a Constituição
+
+| Princípio | Evidência | Resultado |
+|---|---|---|
+| I. Tecnologias e dependências | Stack do Plan; versões fixas nos `.csproj` e em `dotnet-tools.json`; ReportGenerator documentado no Plan | ✅ Conforme |
+| II. Simplicidade e separação | Endpoints → `PasswordService` → `PasswordGenerator`/`PasswordDbContext`; sem Repository, CQRS ou interfaces ociosas | ✅ Conforme |
+| III. Escopo | Somente as duas operações (`Application_ExposesOnlyTwoFunctionalOperations`) | ✅ Conforme |
+| IV. Testes automatizados | Regras de negócio com testes unitários; endpoints com integração; CB-01 a CB-13 cobertos; cobertura ≥80% | ✅ Conforme |
+| V. Qualidade estática e CI | `.editorconfig`, warnings como erros, analisadores no build e workflow de CI | ✅ Conforme (execução remota pendente) |
+| VI. Segurança e dados | `RandomNumberGenerator`; validação do identificador; ProblemDetails sem detalhes internos; senhas fora dos logs (testado); restrições no banco | ✅ Conforme |
+| VII. Código e nomenclatura | Identificadores em inglês; regras de nomenclatura aplicadas no build | ✅ Conforme |
+| VIII. Documentação e versionamento | Documentos em português; um commit por tarefa com Conventional Commits | ✅ Conforme |
+| IX–XII. Processo, rastreabilidade e execução | Tarefas executadas em ordem, com testes antes da implementação e rastreabilidade RF/CA/CB em `tasks.md` | ✅ Conforme |
+
 ## Limitações de segurança
 
 Este projeto é **educacional** e não deve ser usado em produção nem com credenciais reais:
