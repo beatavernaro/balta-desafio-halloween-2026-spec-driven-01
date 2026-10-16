@@ -64,7 +64,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 
 - [X] **T014** [US1] Criar `tests/PasswordGenerator.IntegrationTests/PasswordCreationTests.cs` e infraestrutura `WebApplicationFactory` com SQLite isolado. Testar HTTP 201, GUID, senha e persistência. Se necessário, criar contrato/endpoint mínimo compilável sem comportamento funcional. Incorporar os casos de borda de criação identificados na Specification. **Concluído quando:** testes compilarem, executarem e evidenciarem a funcionalidade ainda ausente.
 - [X] **T015** [US1] Implementar `src/PasswordGenerator.Api/Services/PasswordService.cs` para gerar a senha, criar GUID e persistir antes de confirmar sucesso. **Concluído quando:** o serviço compilar e respeitar a ordem de operações.
-- [ ] **T016** [US1] Criar `src/PasswordGenerator.Api/Contracts/PasswordResponse.cs` e implementar `POST /passwords` em `src/PasswordGenerator.Api/Endpoints/PasswordEndpoints.cs`, registrando-o em `Program.cs`. **Concluído quando:** testes retornarem HTTP 201 e confirmarem GUID e senha persistida.
+- [X] **T016** [US1] Criar `src/PasswordGenerator.Api/Contracts/PasswordResponse.cs` e implementar `POST /passwords` em `src/PasswordGenerator.Api/Endpoints/PasswordEndpoints.cs`, registrando-o em `Program.cs`. **Concluído quando:** testes retornarem HTTP 201 e confirmarem GUID e senha persistida.
 
 ### 5.3 Falhas e segurança
 
