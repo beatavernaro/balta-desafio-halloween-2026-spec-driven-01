@@ -56,7 +56,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 ### 5.1 Geração criptográfica
 
 - [X] **T010** [US1] Criar `tests/PasswordGenerator.UnitTests/PasswordGeneratorTests.cs` com testes para comprimento de 16 caracteres e presença das quatro categorias. Criar o esqueleto mínimo compilável de `src/PasswordGenerator.Api/Services/PasswordGenerator.cs`, se necessário. **Concluído quando:** testes compilarem, executarem e falharem de forma esperada antes da implementação.
-- [ ] **T011** [US1] Implementar seleção criptográfica de caracteres em `PasswordGenerator.cs` usando `RandomNumberGenerator.GetInt32`. **Concluído quando:** testes de comprimento e categorias passarem.
+- [X] **T011** [US1] Implementar seleção criptográfica de caracteres em `PasswordGenerator.cs` usando `RandomNumberGenerator.GetInt32`. **Concluído quando:** testes de comprimento e categorias passarem.
 - [ ] **T012** [US1] Acrescentar a `PasswordGeneratorTests.cs` testes de conjunto permitido, ausência de espaços e não rejeição de repetições ou sequências válidas. Incluir os casos de borda de geração identificados no `spec.md`. **Concluído quando:** os testes compilarem e verificarem as regras sem restrições extras.
 - [ ] **T013** [US1] Implementar embaralhamento Fisher–Yates em `PasswordGenerator.cs` com `RandomNumberGenerator.GetInt32`. **Concluído quando:** testes de geração passarem e a revisão confirmar ausência de `System.Random` ou seleção enviesada por módulo.
 
