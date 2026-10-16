@@ -27,6 +27,7 @@ A implementação seguirá uma arquitetura minimalista, priorizando simplicidade
 | Testes unitários | xUnit |
 | Testes de integração | Microsoft.AspNetCore.Mvc.Testing |
 | Cobertura | Coverlet |
+| Consolidação da cobertura | ReportGenerator (ferramenta local) |
 | Documentação da API | OpenAPI |
 | Integração contínua | GitHub Actions |
 | Análise estática | Analisadores nativos do .NET |
@@ -531,6 +532,7 @@ Os comandos de cobertura e análise estática deverão ser consolidados na confi
 | xUnit | Testes automatizados no ecossistema .NET |
 | WebApplicationFactory | Testes HTTP de integração |
 | Coverlet | Medição automatizada de cobertura |
+| ReportGenerator | Consolida os relatórios do Coverlet dos dois projetos de teste em uma cobertura agregada |
 | GitHub Actions | Execução dos portões de qualidade |
 
 ## 14. Riscos e limitações
