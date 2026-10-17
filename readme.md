@@ -2,7 +2,7 @@
 
 ## 🎃 Halloween - Desafio 1
 
-Oi, eu sou o [seu nome aqui] e este é o espaço onde compartilho minha jornada de aprendizado durante o desafio **Halloween 2026**, realizado pelo [balta.io](https://balta.io). 👻
+Oi, eu sou a Beatriz e este é o espaço onde compartilho minha jornada de aprendizado durante o desafio **Halloween 2026**, realizado pelo [balta.io](https://balta.io). 👻
 
 Aqui você vai encontrar projetos, exercícios e códigos que estou desenvolvendo durante o desafio.
 
@@ -158,7 +158,7 @@ dotnet list PasswordGenerator.slnx package --vulnerable --include-transitive
 | 3. Análise estática | `dotnet format --verify-no-changes` e analisadores `latest-recommended` com estilo aplicado no build | ✅ Sem violações |
 | 3. Análise estática | Pacotes com vulnerabilidades conhecidas, inclusive transitivos | ✅ Nenhum |
 | 4. Conformidade funcional | RF-01 a RF-17, CA-01 a CA-11 e CB-01 a CB-13 com evidência | ✅ Ver seções 9, 10 e 11.1 de [`tasks.md`](specs/tasks.md) |
-| 5. Integração contínua | Workflow [`ci.yml`](.github/workflows/ci.yml) | ⏳ Todas as etapas reproduzidas localmente com sucesso; a primeira execução no GitHub Actions ocorre após o push |
+| 5. Integração contínua | Workflow [`ci.yml`](.github/workflows/ci.yml) | ✅ [Execução no GitHub Actions](https://github.com/beatavernaro/balta-desafio-halloween-2026-spec-driven-01/actions/runs/38963703869) (commit `2f1d3d1`, Ubuntu): os jobs *Build, test and coverage* e *Verify gates reject violations* aprovados |
 
 **Portões reprovam violações** (`scripts/verify-gate-failures.ps1`, em cópia descartável do repositório):
 
@@ -180,7 +180,7 @@ As 6 linhas não cobertas são o método `Down` da migration inicial (reversão,
 | II. Simplicidade e separação | Endpoints → `PasswordService` → `PasswordGenerator`/`PasswordDbContext`; sem Repository, CQRS ou interfaces ociosas | ✅ Conforme |
 | III. Escopo | Somente as duas operações (`Application_ExposesOnlyTwoFunctionalOperations`) | ✅ Conforme |
 | IV. Testes automatizados | Regras de negócio com testes unitários; endpoints com integração; CB-01 a CB-13 cobertos; cobertura ≥80% | ✅ Conforme |
-| V. Qualidade estática e CI | `.editorconfig`, warnings como erros, analisadores no build e workflow de CI | ✅ Conforme (execução remota pendente) |
+| V. Qualidade estática e CI | `.editorconfig`, warnings como erros, analisadores no build e workflow de CI | ✅ Conforme |
 | VI. Segurança e dados | `RandomNumberGenerator`; validação do identificador; ProblemDetails sem detalhes internos; senhas fora dos logs (testado); restrições no banco | ✅ Conforme |
 | VII. Código e nomenclatura | Identificadores em inglês; regras de nomenclatura aplicadas no build | ✅ Conforme |
 | VIII. Documentação e versionamento | Documentos em português; um commit por tarefa com Conventional Commits | ✅ Conforme |

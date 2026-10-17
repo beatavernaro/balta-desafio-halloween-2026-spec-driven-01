@@ -113,7 +113,7 @@ Decompor a implementação da API de geração e consulta de senhas em tarefas p
 - [X] **T031** Auditar a cobertura de **cada** caso de borda CB-01 a CB-13, adicionando aos testes da história correspondente apenas os cenários ainda não contemplados. **Concluído quando:** cada CB tiver teste identificável ou justificativa explícita de revisão técnica, sem descobrir requisitos apenas nesta fase.
 - [X] **T032** Atualizar `README.md` com pré-requisitos, restauração, migrations, execução, testes e limitações de segurança. **Concluído quando:** outra pessoa puder reproduzir a execução.
 - [X] **T033** Atualizar a rastreabilidade deste `tasks.md` com nomes de testes e evidências para RF-01 a RF-17, CA-01 a CA-11 e CB-01 a CB-13. **Concluído quando:** todos possuírem evidência verificável.
-- [ ] **T034** Registrar no `README.md` o procedimento reproduzível e os resultados finais de build, testes, cobertura, análise estática e conformidade com a Constitution. **Concluído quando:** todos os portões estiverem aprovados.
+- [X] **T034** Registrar no `README.md` o procedimento reproduzível e os resultados finais de build, testes, cobertura, análise estática e conformidade com a Constitution. **Concluído quando:** todos os portões estiverem aprovados.
 
 **Dependências:** T029 → T030 → T031 → T032 → T033 → T034.  
 **Portão final:** requisitos e critérios de aceite validados, testes passando, cobertura ≥80%, CI aprovada e nenhuma violação da Constitution.
